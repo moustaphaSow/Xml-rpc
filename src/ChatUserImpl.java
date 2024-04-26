@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import org.apache.xmlrpc.XmlRpcException;
 public class ChatUserImpl {
     private String title = "Logiciel de discussion en ligne";
     private String pseudo = null;
-    private XmlRpcClient server=null;
+    private XmlRpcClient server = null;
     private JFrame window = new JFrame(this.title);
     private JTextArea txtOutput = new JTextArea();
     private JTextField txtMessage = new JTextField();
@@ -73,53 +74,53 @@ public class ChatUserImpl {
                 this.title,  JOptionPane.OK_OPTION
         );
         if (this.pseudo == null) System.exit(0);
-        Vector<String> inscrire = new Vector<String>();
-        inscrire.add(this.pseudo);
-        boolean inscrireOk;
-        try {
-            inscrireOk = (boolean)this.server.execute("sample.subscribe", inscrire);
-            if(inscrireOk){
-                //this.txtOutput.append(this.pseudo +" Connected \n");
-            }else{
-                JOptionPane.showMessageDialog(this.window, "Pseudo existe deja! Veuillez choisir un autre");
-                requestPseudo();
-            }
-        } catch (XmlRpcException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        Vector<String> inscrire = new Vector<String>();
+//        inscrire.add(this.pseudo);
+//        boolean inscrireOk;
+//        try {
+//            inscrireOk = (boolean)this.server.execute("sample.subscribe", inscrire);
+//            if(inscrireOk){
+//                this.txtOutput.append(this.pseudo +" Connected \n");
+//            }else{
+//                JOptionPane.showMessageDialog(this.window, "Pseudo existe deja! Veuillez choisir un autre");
+//                requestPseudo();
+//            }
+//        } catch (XmlRpcException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void window_windowClosing(WindowEvent e) {
-        Vector<String> deconnect = new Vector<String>();
-        deconnect.add(this.pseudo);
-        boolean deconnectOk;
-        try {
-            deconnectOk = (boolean)this.server.execute("sample.unsubscribe", deconnect);
-            if(deconnectOk){
-                System.exit(-1);
-            }
-        } catch (XmlRpcException e1) {
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-
+//        Vector<String> deconnect = new Vector<String>();
+//        deconnect.add(this.pseudo);
+//        boolean deconnectOk;
+//        try {
+//            deconnectOk = (boolean)this.server.execute("sample.unsubscribe", deconnect);
+//            if(deconnectOk){
+//                System.exit(-1);
+//            }
+//        } catch (XmlRpcException e1) {
+//            e1.printStackTrace();
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        }
+        System.exit(-1);
     }
 
     public void btnSend_actionPerformed(ActionEvent e) {
-
-        Vector<String> message = new Vector<String>();
-        message.add(this.pseudo);
-        message.add(this.txtMessage.getText());
-        try {
-            String recu = (String)this.server.execute("sample.postMessage", message);
-        } catch (XmlRpcException e1) {
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+        this.txtOutput.append(this.pseudo+">>>"+ this.txtMessage.getText() + "\n");
+//        Vector<String> message = new Vector<String>();
+//        message.add(this.pseudo);
+//        message.add(this.txtMessage.getText());
+//        try {
+//            String recu = (String)this.server.execute("sample.postMessage", message);
+//        } catch (XmlRpcException e1) {
+//            e1.printStackTrace();
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        }
 
         this.txtMessage.setText("");
         this.txtMessage.requestFocus();
@@ -127,35 +128,35 @@ public class ChatUserImpl {
 
     public static void main(String[] args) {
         ChatUserImpl chatUserImpl = new ChatUserImpl();
-        boolean received = false;
-        String msg = "";
-        String last_msg = "";
-        boolean is_first = false;
-        while(true){
-            try {
-                msg = (String)chatUserImpl.server.execute("sample.getMessage", new Vector());
-                received = true;
-                if(is_first == false){
-                    last_msg = msg;
-                }
-            }catch(Exception e){
-                received = false;
-            }
-            finally {
-                if(received){
-                    if(is_first){
-                        if(!last_msg.equals(msg)){
-                            chatUserImpl.txtOutput.append(msg +" \n");
-                            last_msg = msg;
-                        }
-                    }else{
-
-                        chatUserImpl.txtOutput.append(msg +" \n");
-                        last_msg = msg;
-                        is_first = true;
-                    }
-                }
-            }
-        }
+//        boolean received = false;
+//        String msg = "";
+//        String last_msg = "";
+//        boolean is_first = false;
+//        while(true){
+//            try {
+//                msg = (String)chatUserImpl.server.execute("sample.getMessage", new Vector());
+//                received = true;
+//                if(is_first == false){
+//                    last_msg = msg;
+//                }
+//            }catch(Exception e){
+//                received = false;
+//            }
+//            finally {
+//                if(received){
+//                    if(is_first){
+//                        if(!last_msg.equals(msg)){
+//                            chatUserImpl.txtOutput.append(msg +" \n");
+//                            last_msg = msg;
+//                        }
+//                    }else{
+//
+//                        chatUserImpl.txtOutput.append(msg +" \n");
+//                        last_msg = msg;
+//                        is_first = true;
+//                    }
+//                }
+//            }
+//        }
     }
 }

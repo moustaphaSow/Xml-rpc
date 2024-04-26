@@ -1,4 +1,5 @@
 import org.apache.xmlrpc.WebServer;
+import org.apache.xmlrpc.XmlRpcClient;
 
 import java.util.Vector;
 
